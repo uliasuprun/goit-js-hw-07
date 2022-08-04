@@ -34,18 +34,22 @@ if (!e.target.classList.contains('gallery__image')) {
 }
 }
 
-function openModal(e)  {
-
-    if (e.target.classList.contains('gallery__image')) {
-    const instance = basicLightbox.create(
-        `<img src="${e.target.dataset.source}">`
-    );
-    instance.show();
-}
-}
-
 galleryContainer.addEventListener('click', openModal);
 
+function openModal(e)  {
+    if (!e.target.classList.contains('gallery__image')) {
+        return;
+    } else {
+        const instance = basicLightbox.create(
+        `<img src="${e.target.dataset.source}" width="800" height="600">`,
+        {onShow: () => {window.addEventListener('keydown', handleEscPress)},
+        onClose: () => {window.removeEventListener('keydown', handleEscPress)}
+    });
+    instance.show();
 
-
-
+function handleEscPress (e) {
+    if (e.code === "Escape") {
+        instance.close()}
+}
+}
+}
